@@ -15,14 +15,21 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-
+import { CategoriaComponent } from './componets/categoria/categoria';
+import { LibroComponent } from './componets/libro/libro';
+import { MatSelectModule} from '@angular/material/select';
+import { MatOptionModule, MatNativeDateModule} from '@angular/material/core';
+import { MatDialogModule} from '@angular/material/dialog';
+import {MatDatepickerModule} from '@angular/material/datepicker'; 
 
 
 @NgModule({
   declarations: [
     App,
     ClienteComponent,
-    AutorComponent
+    AutorComponent,
+    CategoriaComponent,
+    LibroComponent
   ],
   imports: [
     BrowserModule,
@@ -37,9 +44,15 @@ import {MatButtonModule} from '@angular/material/button';
     MatFormFieldModule,
     MatIconModule,
     MatButtonModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    MatDatepickerModule
   ],
   bootstrap: [App]
 })
