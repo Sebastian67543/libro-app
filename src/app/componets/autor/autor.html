@@ -1,12 +1,9 @@
 <div class="container mt-4" #formularioAutor>
+
     <h2>{{ editar ? 'Editar Autor' : 'Agregar Autor' }}</h2>
 
     <form (ngSubmit)="guardar(formAutor)" #formAutor="ngForm" novalidate>
         <div class="row">
-            <div class="col-md-4 mb-2">
-                <input class="form-control" type="number" placeholder="ID Autor" [(ngModel)]="autor.idAutor"
-                name="idAutor" required #idAutor="ngModel" [ngClass]="{'is-invalid': idAutor.invalid && idAutor.touched}">
-            </div>
             <div class="col-md-4 mb-2">
                 <input class="form-control" type="text" placeholder="Nombre" [(ngModel)]="autor.nombre"
                 name="nombre" required #nombre="ngModel" [ngClass]="{'is-invalid': nombre.invalid && nombre.touched}">

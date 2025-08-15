@@ -11,7 +11,7 @@ import { AutorService } from '../../services/autor';
   selector: 'app-autor',
   standalone: false,
   templateUrl: './autor.html',
-  styleUrls: ['./autor.css']
+  styleUrl: './autor.css'
 })
 export class AutorComponent implements OnInit {
   editar: boolean = false;
@@ -35,6 +35,7 @@ export class AutorComponent implements OnInit {
 
   findAll(): void {
     this.autorService.findAll().subscribe(data => {
+      //this.autores = data;
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

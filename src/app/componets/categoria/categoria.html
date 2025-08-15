@@ -4,14 +4,6 @@
   <form (ngSubmit)="guardar(formCategoria)" #formCategoria="ngForm" novalidate>
     <div class="row">
       <div class="col-md-4 mb-2">
-        <input class="form-control" type="number" placeholder="ID Categoria"
-          [(ngModel)]="categoria.idCategoria"
-          name="idCategoria"
-          required
-          #idCat="ngModel"
-          [ngClass]="{'is-invalid': idCat.invalid && idCat.touched}" />
-      </div>
-      <div class="col-md-4 mb-2">
         <input class="form-control" type="text" placeholder="Categoria"
           [(ngModel)]="categoria.categoria"
           name="categoria"

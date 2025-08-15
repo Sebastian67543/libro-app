@@ -1,10 +1,8 @@
-import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Libro } from '../../model/libro.model';
-import Swal from 'sweetalert2';
-import { NgForm } from '@angular/forms';
 import { Autor } from '../../model/autor.model';
 import { Categoria } from '../../model/categoria.model';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { LibroService } from '../../services/libro';
@@ -12,6 +10,8 @@ import { AutorService } from '../../services/autor';
 import { CategoriaService } from '../../services/categoria';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-libro',
@@ -19,8 +19,9 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './libro.html',
   styleUrl: './libro.css'
 })
-export class LibroComponent {
-
+export class LibroComponent implements OnInit {
+  
+  autor: Autor = {} as Autor;
   libros: Libro[] = [];
   autores: Autor[] = [];
   categorias: Categoria[] = [];
@@ -55,38 +56,37 @@ export class LibroComponent {
     this.cargarAutores();
   }
 
-
-  findAll(): void{
-    this.libroService.findAll().subscribe((data: Libro[] | undefined) => {
+  findAll(): void {
+    this.libroService.findAll().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-  cargarCategorias(): void{
-    this.categoriaService.findAll().subscribe((data: Categoria[]) => {
+  cargarCategorias(): void {
+    this.categoriaService.findAll().subscribe(data => {
       this.categorias = data;
     });
   }
 
   cargarAutores(): void {
-    this.autorService.findAll().subscribe((data: Autor[]) => {
+    this.autorService.findAll().subscribe(data => {
       this.autores = data;
     });
   }
 
-  save(): void{
-    this.libroService.save(this.libro).subscribe(() =>{
+  save(): void {
+    this.libroService.save(this.libro).subscribe(() => {
       this.libro = {} as Libro;
       this.findAll();
     });
   }
 
-  update(): void{
-    if(this.idEditar !== null){
-      this.libroService.update(this.idEditar, this.libro).subscribe(() =>{
-        this.libro = { } as Libro;
+  update(): void {
+    if (this.idEditar !== null) {
+      this.libroService.update(this.idEditar, this.libro).subscribe(() => {
+        this.libro = {} as Libro;
         this.editar = false;
         this.idEditar = null;
         this.findAll();
@@ -94,10 +94,10 @@ export class LibroComponent {
     }
   }
 
-  delete(): void{
+  delete(): void {
     Swal.fire({
       title: '¿Desea eliminar el libro?',
-      text: 'Esta acccion no se puede deshacer',
+      text: 'Esta accion no se puede deshacer',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si, eliminar',
@@ -105,60 +105,65 @@ export class LibroComponent {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6'
     }).then((result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed) {
         this.libroService.delete(this.libro.idLibro).subscribe(() => {
           this.findAll();
-          this.libro = { } as Libro;
-          Swal.fire('Eliminado','El libro ha sido eliminado','success');
+          this.libro = {} as Libro;
+          Swal.fire('Eliminado', 'El libro ha sido eliminado', 'success');
         });
-      }else{
-        this.libro = { } as Libro;
+      } else {
+        this.libro = {} as Libro;
       }
     });
   }
 
-  //interaccion con la pagina web
-  editarLibro(libro: Libro): void{
-    this.libro = { ...libro};
+  editarLibro(libro: Libro): void {
+    this.libro = { ...libro };
     this.idEditar = libro.idLibro;
     this.editar = true;
-    setTimeout(() =>{
-      this.formularioLibro.nativeElement.scrollIntoView({behavior: 'smooth', block:'start'});
-    },100);
+    setTimeout(() => {
+      this.formularioLibro.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }
 
-  editarLibroCancelar(form: NgForm): void{
-    this.libro = { } as Libro;
+  editarLibroCancelar(form: NgForm): void {
+    this.libro = {} as Libro;
     this.idEditar = null;
     this.editar = false;
     form.resetForm();
   }
 
-  guardarLibro(): void{
-    if(this.editar && this.idEditar! == null){
+  guardarLibro(): void {
+    if (this.editar && this.idEditar !== null) {
       this.update();
-    }else{
+    } else {
       this.save();
     }
+
     this.dialog.closeAll();
   }
 
-  filtroLibro(event: Event): void{
+  filtroLibro(event: Event): void {
     const filtro = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filtro.trim().toLowerCase();
   }
 
-  nombreCompletoAutor(autor: Autor): string{
-    return `${autor.nombre} ${autor.apellido}`;
-  }
+  nombreCompletoAutor(autor: Autor | string | undefined): string {
+    if (!autor) return 'Autor desconocido';
 
-  abrirModal(libro?: Libro):void{
-    if(libro){
-      this.libro = {... libro};
+    // Si el autor es un string, devolverlo directamente
+    if (typeof autor === 'string') return autor;
+
+    // Si es objeto Autor
+    return autor.nombre || 'Autor sin nombre';
+  }
+  abrirModal(libro?: Libro): void {
+    if (libro) {
+      this.libro = { ...libro };
       this.editar = true;
       this.idEditar = libro.idLibro;
-    }else{
-      this.libro = { } as Libro;
+    } else {
+      this.libro = {} as Libro;
       this.editar = false;
       this.idEditar = null;
     }
@@ -169,49 +174,46 @@ export class LibroComponent {
     });
   }
 
-  compararAutores(a1: Autor, a2: Autor): boolean{
+  compararAutores(a1: Autor, a2: Autor): boolean {
     return a1 && a2 ? a1.idAutor === a2.idAutor : a1 === a2;
   }
 
-  compararCategorias(c1: Categoria, c2: Categoria){
+  compararCategorias(c1: Categoria, c2: Categoria) {
     return c1 && c2 ? c1.idCategoria === c2.idCategoria : c1 === c2;
   }
 
-  onFileSelected(event: any){
+  onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
-  subirImagen(): void{
+  subirImagen(): void {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    if(this.libro.portada){
+    if (this.libro.portada) {
       formData.append('oldImage', this.libro.portada);
     }
 
-    this.http.post<{ruta: string}>('http://localhost:8080/api/upload-portada', formData).subscribe(res => {
+    this.http.post<{ ruta: string }>('http://localhost:8080/api/upload-portada', formData).subscribe(res => {
       this.libro.portada = res.ruta;
       this.imagenPreview = res.ruta;
     });
   }
 
-  abrirModalDetalles(libro: Libro): void{
+  abrirModalDetalles(libro: Libro): void {
     this.libroSelecionado = libro;
-    this.dialog.open(this.modalDetalles,{
+    this.dialog.open(this.modalDetalles, {
       width: '500px'
     });
   }
 
-  cerrarModal(): void{
-    this,this.dialog.closeAll();
-    this.libroSelecionado = null
+  cerrarModal(): void {
+    this.dialog.closeAll();
+    this.libroSelecionado = null;
   }
 
 
+
 }
-
-
-
-
 
 

@@ -1,13 +1,13 @@
-import { CategoriaComponent } from "../componets/categoria/categoria"
 import { Autor } from "./autor.model"
+import { Categoria } from "./categoria.model"
 
-export interface Libro{
+export interface Libro  {
     idLibro: number
     titulo: string
     editorial: string
     numPaginas: number
-    edicion: String
-    idioma: String
+    edicion: string
+    idioma: string
     fechaPublicacion: Date
     descripcion: string
     tipoPasta: string
@@ -16,9 +16,9 @@ export interface Libro{
     portada: string
     presentacion: string
     precio: number
-    categoria: CategoriaComponent
+    categoria: Categoria
     autor: Autor
 
-
     [key: string]: any;
+
 }
