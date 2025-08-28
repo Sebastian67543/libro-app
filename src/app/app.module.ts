@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { App } from './app';
-import { ClienteComponent } from './componets/cliente/cliente';
-import { AutorComponent } from './componets/autor/autor';
-import {FormsModule} from  '@angular/forms';
+import { ClienteComponent } from './components/cliente/cliente';
+import { AutorComponent } from './components/autor/autor';
+import {FormsModule, ReactiveFormsModule} from  '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTableModule} from '@angular/material/table';
@@ -15,12 +15,20 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import { CategoriaComponent } from './componets/categoria/categoria';
-import { LibroComponent } from './componets/libro/libro';
+import { CategoriaComponent } from './components/categoria/categoria';
+import { LibroComponent } from './components/libro/libro';
 import { MatSelectModule} from '@angular/material/select';
 import { MatOptionModule, MatNativeDateModule} from '@angular/material/core';
 import { MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker'; 
+import {MatToolbarModule} from '@angular/material/toolbar'
+import {MatCardModule} from '@angular/material/card'
+import {MatSnackBarModule} from '@angular/material/snack-bar'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LibrosListComponent } from './components/libros-list/libros-list'
+import { CarritoComponent } from './components/carrito/carrito';
+import {MatMenuModule} from '@angular/material/menu'
+
 
 
 @NgModule({
@@ -29,7 +37,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     ClienteComponent,
     AutorComponent,
     CategoriaComponent,
-    LibroComponent
+    LibroComponent,
+    CarritoComponent,
+    LibrosListComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +59,16 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatMenuModule
+
+
+
+
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

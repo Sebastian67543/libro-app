@@ -20,8 +20,7 @@ import { NgForm } from '@angular/forms';
   styleUrl: './libro.css'
 })
 export class LibroComponent implements OnInit {
-  
-  autor: Autor = {} as Autor;
+
   libros: Libro[] = [];
   autores: Autor[] = [];
   categorias: Categoria[] = [];

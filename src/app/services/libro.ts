@@ -8,6 +8,9 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class LibroService {
+  getLibros() {
+    throw new Error('Method not implemented.');
+  }
   
   private baseUrl="http://localhost:8080/libros";
   
